@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -50,8 +51,8 @@
 			</tr>
 			<tr>
 				<td><label> Contact No. </label></td>
-				<td><input type="number" name="contact" maxlength="12" size="12"
-					pattern=[0-9]{10,12} class="forminput"
+				<td><input type="text" name="contact" pattern=[0-9]{10,12}
+					class="forminput"
 					value="<%=(request.getParameter("contact") != null) ? request.getParameter("contact") : ""%>">
 				</td>
 			</tr>
