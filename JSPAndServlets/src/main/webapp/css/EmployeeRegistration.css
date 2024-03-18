@@ -1,17 +1,22 @@
 @charset "ISO-8859-1";
 
-input {
-	padding: 300px;    
-	float: right;
-	background-color: skyblue;
-}
-
-label,
-input {
-  display: inline-block;
-}
 
 input+input {
   float: right;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border-spacing: 0px;
+};
+
+input.submit {
+	align-items: center;
 }
 
+form.formClass {
+	width: 5%;
+}
+
+.forminput {
+	position: fixed;
+}

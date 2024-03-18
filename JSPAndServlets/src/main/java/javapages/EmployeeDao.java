@@ -19,54 +19,61 @@ public class EmployeeDao extends HttpServlet {
 
 	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
 		String firstName = (String) request.getAttribute("firstname");
 		String lastName = (String) request.getAttribute("lastname");
 		String user = (String) request.getAttribute("username");
 		String pass = (String) request.getAttribute("password");
 		String address = (String) request.getAttribute("address");
-		int contact = (int) request.getAttribute("contact");
-		PrintWriter out = response.getWriter();
-		out.println("firstname is " + firstName);
-		out.println("lastname is " + lastName);
-		out.println("username is " + user);
-		out.println("password is " + pass);
-		out.println("address is " + address);
-		out.println("contact is " + contact);
-	
+		String contact = (String) request.getAttribute("contact");
+		int number = 0;
+		if (contact != null && !contact.isEmpty()) {
+			number = Integer.parseInt(contact);
+		}
+
 		if (firstName == "") {
 			response.setContentType("text/html");
-			out.println("<h5>First Name should not be empty.</h5>");
+			out.println("<h3 style=\"color: red; text-align: center;\">First Name should not be empty.</h3>");
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
 			requestDispatcher.include(request, response);
 		} else if (user == "") {
 			response.setContentType("text/html");
-			out.println("<h5>Username should not be empty.</h5>");
+			out.println("<h3 style=\"color: red; text-align: center;\">Username should not be empty.</h3>");
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
 			requestDispatcher.include(request, response);
 		} else if (pass == "") {
 			response.setContentType("text/html");
-			out.println("<h5>Password should not be empty.</h5>");
+			out.println("<h3 style=\"color: red; text-align: center;\">Password should not be empty.</h3>");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
+			requestDispatcher.include(request, response);
+		} else if (contact == null || contact.isEmpty()) {
+			response.setContentType("text/html");
+			out.print(
+					"<h3 style=\"color: red; text-align: center;\">Enter your contact number and it should only contain digits.</h3>");
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
 			requestDispatcher.include(request, response);
 		} else {
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				try {
-					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/registerdatabase", "root", "root");
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/registerdatabase",
+							"root", "root");
 
-					PreparedStatement preparedStatement = connection.prepareStatement("Insert into register values(?,?,?,?,?,?)");
+					PreparedStatement preparedStatement = connection
+							.prepareStatement("Insert into register values(?,?,?,?,?,?)");
 					preparedStatement.setString(1, firstName);
 					preparedStatement.setString(2, lastName);
 					preparedStatement.setString(3, user);
 					preparedStatement.setString(4, pass);
 					preparedStatement.setString(5, address);
-					preparedStatement.setInt(6, contact);
+					preparedStatement.setInt(6, number);
 
 					int count = preparedStatement.executeUpdate();
-					if(count > 0 && !firstName.isEmpty() && !pass.isEmpty() && !user.isEmpty()) {
+					if (count > 0 && !firstName.isEmpty() && !pass.isEmpty() && !user.isEmpty()) {
 						response.setContentType("text/html");
 						out.println("<h3 style = 'color : green'> User Registration Successful </h3>");
-						RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
+						RequestDispatcher requestDispatcher = request
+								.getRequestDispatcher("/RegistrationSuccessful.jsp");
 						requestDispatcher.include(request, response);
 					} else {
 						response.setContentType("text/html");
@@ -76,7 +83,8 @@ public class EmployeeDao extends HttpServlet {
 					}
 				} catch (SQLException e) {
 					response.setContentType("text/html");
-					out.println("<h3 style = 'color : red'> User Registration Failed - SQL Exception : </h3>" + e.getMessage());
+					out.println("<h3 style = 'color : red'> User Registration Failed - SQL Exception : </h3>"
+							+ e.getMessage());
 					RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
 					requestDispatcher.include(request, response);
 				}
@@ -88,5 +96,5 @@ public class EmployeeDao extends HttpServlet {
 			}
 		}
 	}
-	
+
 }
