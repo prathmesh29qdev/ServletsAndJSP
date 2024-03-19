@@ -23,7 +23,7 @@ function validateForm() {
 		} else {
 			setError("fname", "");
 		}
-		}
+	}
 
 	let lastname = document.forms["myForm"]["lastname"].value.trim();
 	if (lastname != "" && lastname != null) {
@@ -34,7 +34,7 @@ function validateForm() {
 			returnval = false;
 		}
 	}
-	
+
 	let username = document.forms["myForm"]["username"].value.trim();
 	if (username == "" || username == null) {
 		setError("uname", "*User name should not be empty.");
@@ -43,7 +43,7 @@ function validateForm() {
 	} else {
 		setError("uname", "");
 	}
-	
+
 	let password = document.forms["myForm"]["password"].value.trim();
 	if (password == "" || firstname == null) {
 		setError("pass", "*Password should not be empty.");
@@ -52,23 +52,23 @@ function validateForm() {
 	} else {
 		setError("pass", "");
 	}
-	
+
 	let contact = document.forms["myForm"]["contact"].value.trim();
 	if (contact == "" || contact == null) {
 		setError("contact", "*Contact number should not be empty.");
 		returnval = false;
 		console.log("not changed the value" + returnval + " " + firstname);
 	} else if (contact != "" && contact != null) {
-		 let regex1 = /^(0|91)?[0-9]\d{9}$/;
-		 if (!regex1.test(contact)) {
-		setError("contact", "*Contact number should have only 10 digits.");
-		returnval = false;
-		console.log("contact matching");
+		let regex1 = /^(0|91)?[0-9]\d{9}$/;
+		if (!regex1.test(contact)) {
+			setError("contact", "*Contact number should have only 10 digits.");
+			returnval = false;
+			console.log("contact matching");
 		} else {
 			setError("contact", "");
 		}
 	}
-	
+
 	return returnval;
 }
 
