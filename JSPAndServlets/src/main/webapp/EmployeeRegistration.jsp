@@ -19,7 +19,7 @@
 				<td><label> First Name </label></td>
 				<td><input type="text" name="firstname"
 					pattern="[A-Za-z]{1,32}" class="forminput"
-					value="<%=(request.getParameter("firstname") != null) ? request.getParameter("firstname") : ""%>">
+					value="<%=(request.getParameter("firstname") != null) ? request.getParameter("firstname") : ""%>" required="required">
 				</td>
 			</tr>
 			<tr>
@@ -32,14 +32,14 @@
 			<tr>
 				<td><label> Username </label></td>
 				<td><input type="text" name="username" class="forminput"
-					value="<%=(request.getParameter("username") != null) ? request.getParameter("username") : ""%>">
+					value="<%=(request.getParameter("username") != null) ? request.getParameter("username") : ""%>" required="required">
 				</td>
 			</tr>
 			<tr>
 				<td><label> Password </label></td>
 				<td><input type="password" name="password"
 					pattern="[A-Za-z,0-9]{1,32}" class="forminput"
-					value="<%=(request.getParameter("password") != null) ? request.getParameter("password") : ""%>">
+					value="<%=(request.getParameter("password") != null) ? request.getParameter("password") : ""%>" required="required">
 				</td>
 			</tr>
 			<tr>
@@ -52,7 +52,7 @@
 				<td><label> Contact No. </label></td>
 				<td><input type="text" name="contact" pattern="(0|91)?[6-9][0-9]{9}"
 					class="forminput"
-					value="<%=(request.getParameter("contact") != null) ? request.getParameter("contact") : ""%>">
+					value="<%=(request.getParameter("contact") != null) ? request.getParameter("contact") : ""%>" required="required">
 				</td>
 			</tr>
 		</table>
