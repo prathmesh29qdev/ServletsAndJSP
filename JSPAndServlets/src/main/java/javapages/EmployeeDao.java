@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -26,7 +28,6 @@ public class EmployeeDao extends HttpServlet {
 		String pass = (String) request.getAttribute("password");
 		String address = (String) request.getAttribute("address");
 		String contact = (String) request.getAttribute("contact");
-		int number = 0;
 
 		if (contact == null && contact.isEmpty()) {
 			response.setContentType("text/html");
@@ -58,7 +59,6 @@ public class EmployeeDao extends HttpServlet {
 		} else {
 			if (contact.length() == 12 || contact.length() == 10) {
 				try {
-					number = Integer.parseInt(contact);
 					try {
 						Class.forName("com.mysql.cj.jdbc.Driver");
 						try {
@@ -72,7 +72,7 @@ public class EmployeeDao extends HttpServlet {
 							preparedStatement.setString(3, user);
 							preparedStatement.setString(4, pass);
 							preparedStatement.setString(5, address);
-							preparedStatement.setInt(6, number);
+							preparedStatement.setString(6, contact);
 
 							int count = preparedStatement.executeUpdate();
 							if (count > 0 && !firstName.isEmpty() && !pass.isEmpty() && !user.isEmpty()) {
