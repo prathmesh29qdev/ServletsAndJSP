@@ -51,7 +51,7 @@
 			</tr>
 			<tr>
 				<td><label> Contact No. </label></td>
-				<td><input type="text" name="contact" pattern=[0-9]{10,12}
+				<td><input type="text" name="contact" pattern="[9/8/7/6]\{10-12)"
 					class="forminput"
 					value="<%=(request.getParameter("contact") != null) ? request.getParameter("contact") : ""%>">
 				</td>

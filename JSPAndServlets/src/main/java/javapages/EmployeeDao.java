@@ -27,11 +27,14 @@ public class EmployeeDao extends HttpServlet {
 		String address = (String) request.getAttribute("address");
 		String contact = (String) request.getAttribute("contact");
 		int number = 0;
-		if (contact != null && !contact.isEmpty()) {
-			number = Integer.parseInt(contact);
-		}
 
-		if (firstName == "") {
+		if (contact == null && contact.isEmpty()) {
+			response.setContentType("text/html");
+			out.println(
+					"<h3 style=\"color: red; text-align: center;\">Contact number should have atleast 10 and atmax 12 digits.</h3>");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
+			requestDispatcher.include(request, response);
+		} else if (firstName == "") {
 			response.setContentType("text/html");
 			out.println("<h3 style=\"color: red; text-align: center;\">First Name should not be empty.</h3>");
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
@@ -53,44 +56,63 @@ public class EmployeeDao extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
 			requestDispatcher.include(request, response);
 		} else {
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
+			if (contact.length() == 12 || contact.length() == 10) {
 				try {
-					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/registerdatabase",
-							"root", "root");
+					number = Integer.parseInt(contact);
+					try {
+						Class.forName("com.mysql.cj.jdbc.Driver");
+						try {
+							Connection connection = DriverManager
+									.getConnection("jdbc:mysql://localhost:3306/registerdatabase", "root", "root");
 
-					PreparedStatement preparedStatement = connection
-							.prepareStatement("Insert into register values(?,?,?,?,?,?)");
-					preparedStatement.setString(1, firstName);
-					preparedStatement.setString(2, lastName);
-					preparedStatement.setString(3, user);
-					preparedStatement.setString(4, pass);
-					preparedStatement.setString(5, address);
-					preparedStatement.setInt(6, number);
+							PreparedStatement preparedStatement = connection
+									.prepareStatement("Insert into register values(?,?,?,?,?,?)");
+							preparedStatement.setString(1, firstName);
+							preparedStatement.setString(2, lastName);
+							preparedStatement.setString(3, user);
+							preparedStatement.setString(4, pass);
+							preparedStatement.setString(5, address);
+							preparedStatement.setInt(6, number);
 
-					int count = preparedStatement.executeUpdate();
-					if (count > 0 && !firstName.isEmpty() && !pass.isEmpty() && !user.isEmpty()) {
+							int count = preparedStatement.executeUpdate();
+							if (count > 0 && !firstName.isEmpty() && !pass.isEmpty() && !user.isEmpty()) {
+								response.setContentType("text/html");
+								out.println("<h3 style = 'color : green'> User Registration Successful </h3>");
+								RequestDispatcher requestDispatcher = request
+										.getRequestDispatcher("/RegistrationSuccessful.jsp");
+								requestDispatcher.include(request, response);
+							} else {
+								response.setContentType("text/html");
+								out.println("<h3 style = 'color : red'> User Registration Failed </h3>");
+								RequestDispatcher requestDispatcher = request
+										.getRequestDispatcher("/EmployeeRegistration.jsp");
+								requestDispatcher.include(request, response);
+							}
+						} catch (SQLException e) {
+							response.setContentType("text/html");
+							out.println("<h3 style = 'color : red'> User Registration Failed - SQL Exception : </h3>"
+									+ e.getMessage());
+							RequestDispatcher requestDispatcher = request
+									.getRequestDispatcher("/EmployeeRegistration.jsp");
+							requestDispatcher.include(request, response);
+						}
+					} catch (ClassNotFoundException e) {
 						response.setContentType("text/html");
-						out.println("<h3 style = 'color : green'> User Registration Successful </h3>");
-						RequestDispatcher requestDispatcher = request
-								.getRequestDispatcher("/RegistrationSuccessful.jsp");
-						requestDispatcher.include(request, response);
-					} else {
-						response.setContentType("text/html");
-						out.println("<h3 style = 'color : red'> User Registration Failed </h3>");
+						out.println("<h3 style = 'color : red'> User Registration Failed - Exception : </h3>"
+								+ e.getMessage());
 						RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
 						requestDispatcher.include(request, response);
 					}
-				} catch (SQLException e) {
+				} catch (Exception e) {
 					response.setContentType("text/html");
-					out.println("<h3 style = 'color : red'> User Registration Failed - SQL Exception : </h3>"
-							+ e.getMessage());
+					out.println(
+							"<h3 style=\"color: red; text-align: center;\">Enter a valid number or check if it's correct.</h3>");
 					RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
 					requestDispatcher.include(request, response);
 				}
-			} catch (ClassNotFoundException e) {
+			} else {
 				response.setContentType("text/html");
-				out.println("<h3 style = 'color : red'> User Registration Failed - Exception : </h3>" + e.getMessage());
+				out.println("<h3 style=\"color: red; text-align: center;\">Number should be 10 and 12 digits.</h3>");
 				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
 				requestDispatcher.include(request, response);
 			}
