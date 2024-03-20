@@ -29,6 +29,7 @@ public class EmployeeServlet extends HttpServlet {
 		String user = request.getParameter("username");
 		String pass = request.getParameter("password");
 		String address = request.getParameter("address");
+		String emailId = request.getParameter("emailId");
 		String number = request.getParameter("contact");
 
 		request.setAttribute("firstname", firstName);
@@ -36,6 +37,7 @@ public class EmployeeServlet extends HttpServlet {
 		request.setAttribute("username", user);
 		request.setAttribute("password", pass);
 		request.setAttribute("address", address);
+		request.setAttribute("emailId", emailId);
 		request.setAttribute("contact", number);
 		request.getRequestDispatcher("employeeDao").forward(request, response);
 	}

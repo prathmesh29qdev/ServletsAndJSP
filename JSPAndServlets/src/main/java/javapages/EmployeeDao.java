@@ -27,6 +27,7 @@ public class EmployeeDao extends HttpServlet {
 		String user = (String) request.getAttribute("username");
 		String pass = (String) request.getAttribute("password");
 		String address = (String) request.getAttribute("address");
+		String emailId = (String) request.getAttribute("emailId");
 		String contact = (String) request.getAttribute("contact");
 
 		if (contact == null && contact.isEmpty()) {
@@ -66,13 +67,14 @@ public class EmployeeDao extends HttpServlet {
 									.getConnection("jdbc:mysql://localhost:3306/registerdatabase", "root", "root");
 
 							PreparedStatement preparedStatement = connection
-									.prepareStatement("Insert into register values(?,?,?,?,?,?)");
+									.prepareStatement("Insert into register values(?,?,?,?,?,?,?)");
 							preparedStatement.setString(1, firstName);
 							preparedStatement.setString(2, lastName);
 							preparedStatement.setString(3, user);
 							preparedStatement.setString(4, pass);
 							preparedStatement.setString(5, address);
-							preparedStatement.setString(6, contact);
+							preparedStatement.setString(6, emailId);
+							preparedStatement.setString(7, contact);
 
 							int count = preparedStatement.executeUpdate();
 							if (count > 0 && !firstName.isEmpty() && !pass.isEmpty() && !user.isEmpty()) {
@@ -89,12 +91,29 @@ public class EmployeeDao extends HttpServlet {
 								requestDispatcher.include(request, response);
 							}
 						} catch (SQLException e) {
-							response.setContentType("text/html");
-							out.println("<h3 style = 'color : red'> User Registration Failed - SQL Exception : </h3>"
-									+ e.getMessage());
-							RequestDispatcher requestDispatcher = request
-									.getRequestDispatcher("/EmployeeRegistration.jsp");
-							requestDispatcher.include(request, response);
+							if (e.getMessage() != null) {
+								String errorMessage = e.getMessage();
+								System.out.println("email value " + errorMessage.contains("email"));
+								if (errorMessage.contains("email")) {
+									request.setAttribute("emailError", "Email is duplicate");
+								}
+								if (errorMessage.contains("user")) {
+									request.setAttribute("userError", "Username is duplicate");
+								}
+								if (errorMessage.contains("mobile")) {
+									request.setAttribute("contactError", "Contact number is duplicate");
+								}
+								if (!errorMessage.contains("email") && !errorMessage.contains("user")
+										&& !errorMessage.contains("mobile")) {
+									response.setContentType("text/html");
+									out.println(
+											"<h3 style = 'color : red'> User Registration Failed - SQL Exception : </h3>"
+													+ e.getMessage());
+								}
+								RequestDispatcher requestDispatcher = request
+										.getRequestDispatcher("/EmployeeRegistration.jsp");
+								requestDispatcher.include(request, response);
+							}
 						}
 					} catch (ClassNotFoundException e) {
 						response.setContentType("text/html");

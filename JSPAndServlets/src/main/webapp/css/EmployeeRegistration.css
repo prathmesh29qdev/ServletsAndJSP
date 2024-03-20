@@ -1,23 +1,5 @@
 @charset "ISO-8859-1";
 
-
-input+input {
-	float: right;
-	margin-bottom: 0px;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	border-spacing: 0px;
-}
-
-;
-
-input.submit {
-	align-items: center;
-}
-
-
-.classform {}
-
 .tabledata {
 	margin-left: auto;
 	margin-right: auto;
@@ -33,7 +15,12 @@ input.submit {
 	margin-left: 51%;
 }
 
+.forminput {
+	width: 11rem;	
+}
+
 label {
+	
 	width: 50%;
 	padding-left: 80%;
 }
@@ -45,4 +32,6 @@ th {
 
 td {
 	width: 40%;
+	font-size: 1rem;
+    height: 1.5rem;
 }
