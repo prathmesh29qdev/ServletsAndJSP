@@ -194,3 +194,8 @@ function validateContact() {
 	}
 	return returnval;
 }
+
+function editRecord(registerRow) {
+	var firstname = registerRow.firstName;
+	console.log("THIS is Data" + firstname); 
+}

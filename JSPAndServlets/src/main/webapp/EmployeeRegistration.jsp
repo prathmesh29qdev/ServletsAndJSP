@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	 <%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,69 +8,162 @@
 <title>Employee Registrations</title>
 <link rel="stylesheet" href="css/EmployeeRegistration.css"
 	type="text/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<style>   
+ td { text-align: justify; }
+ td::after {
+    content: attr(data-content);
+    display: inline-block;
+    width: 100%; }
+</style>
 </head>
-<body>
-	<h1
-		style='text-align: center; padding-top: 4%; font-size: 45px; margin-left: auto; margin-right: auto;'>
-		Employee Register Form</h1>
-	<form method="post" action="register" name="myForm" class="classform"
-		onsubmit="return validateForm()">
-		<table class="tabledata">
-			<tr id="fname">
-				<td><label> First Name </label></td>
-				<td><input type="text" name="firstname" class="forminput"
-					id="firstname" name="firstname" onkeyup="return validateFirstname()"
-					value="<%=(request.getParameter("firstname") != null) ? request.getParameter("firstname") : ""%>">
-					<span class="formError"></span></td>
-			</tr>
-			<tr id="lname">
-				<td><label> Last Name </label></td>
-				<td><input type="text" name="lastname" id="lastname"
-					class="forminput" onkeyup="return validateLastname()"
-					value="<%=(request.getParameter("lastname") != null) ? request.getParameter("lastname") : ""%>">
-					<span class="formError"></span></td>
-			</tr>
-			<tr id="uname">
-				<td><label> Username </label></td>
-				<td><input type="text" name="username" class="forminput"
-					id="username" onkeyup="return validateUsername()"
-					value="<%=(request.getParameter("username") != null) ? request.getParameter("username") : ""%>">
-					<span class="formError"> <%= ((String) request.getAttribute("userError")) != null ? 
-							(String) request.getAttribute("userError") : ""%> </span></td>
-			</tr>
-			<tr id="pass">
-				<td><label> Password </label></td>
-				<td><input type="password" name="password"
-					pattern="[A-Za-z,0-9]{1,32}" class="forminput" id="password" onkeyup="return validatePassword()"
-					value="<%=(request.getParameter("password") != null) ? request.getParameter("password") : ""%>">
-					<span class="formError"></span></td>
-			</tr>
-			<tr id="add">
-				<td><label> Address </label></td>
-				<td><input type="text" name="address" class="forminput"
-					id="address" onkeyup="return validateAddress()"
-					value="<%=(request.getParameter("address") != null) ? request.getParameter("address") : ""%>">
-					<span class="formError"></span></td>
-			</tr>
-			<tr id="email">
-				<td><label> Email id </label></td>
-				<td><input type="text" name="emailId" class="forminput"
-					id="emailId" onkeyup="return validateEmail()"
-					value="<%=(request.getParameter("emailId") != null) ? request.getParameter("emailId") : ""%>">
-					<span class="formError"> <%= ((String) request.getAttribute("emailError")) != null ? 
-							(String) request.getAttribute("emailError") : ""%> </span></td>
-			</tr>
-			<tr id="contact">
-				<td><label> Contact No. </label></td>
-				<td><input type="text" name="contact" class="forminput"
-					id=contact onkeyup="return validateContact()"
-					value="<%=(request.getParameter("contact") != null) ? request.getParameter("contact") : ""%>">
-					<span class="formError"> <%= ((String) request.getAttribute("contactError")) != null ? 
-							(String) request.getAttribute("contactError") : ""%></span></td>
-			</tr>
-		</table>
-		<input type="submit" value="Submit" class="submit">
-	</form>
+<body style="height: fit-content;background-repeat:no-repeat;background-size: cover; background-image: url('images/image.jpg')">
+<!-- <header style="background-image: linear-gradient(#f8f8ff,#d3d3d3);margin-top: 0px; padding: 60px;text-align: center;font-size: 30px">
+<h2 style="margin-left:-4%;margin-top:0px; margin-bottom:10px">Employee Register Form</h2>
+</header> -->
+	
+	  <div  style="width:100%; display:flex; margin-top: 8%">
+	 <!--  <div style="float: left; background-color: #AEB6BF; width: 30%; height: 489px">
+	  	<form action="showAllRecords" method="get" style="margin-top:10px; width 100%">
+        <button type="submit" class="btn btn-outline-dark" style="margin-left: 145px;width:40%; background-color: transparent;color: black">Show All Records</button>
+    </form>
+	  </div> -->
+   		<div class="card-body" style="margin-left: 0px;background-color:white;margin-left: 23%;margin-right: 23%; border-radius: 3%">
+   		
+   		<c:if test="${editRow != null}">
+   		<h2 style="margin-left:37%; margin-bottom:45px">Update Details</h2>
+   		</c:if>
+   		
+   		<c:if test="${editRow == null}">
+   		<h2 style="margin-left:29%; margin-bottom:45px">Employee Register Form</h2>
+   		</c:if>
+   	
+   		<div>
+    		<c:if test="${editRow != null}">
+				<form action="update" method="post" name="myForm" class="classform"
+				onsubmit="return validateForm()" style="margin-left: 11%">
+			</c:if>
+			<c:if test="${editRow == null}">
+				<form method="post" action="register" name="myForm" class="classform"
+				onsubmit="return validateForm()" style="margin-left: 11%">
+			</c:if>
+	
+			<c:if test="${editRow != null}">
+				<div class="form-group row" id="id">
+					<label class="col-sm-2 col-form-label"> Id </label>
+					<div class="col-sm-7">
+						<input type="text" name="id" class="form-control"
+							id="id" name="id" autocomplete="off"
+							placeholder="Enter first name"
+							value="<c:out value='${editRow.id}' default='${rowStill.id}'/>" readonly="readonly">
+						<span class="formError"></span>
+					</div>
+				</div>
+			</c:if>
+			
+			<div class="form-group row" id="fname">
+				<label class="col-sm-2 col-form-label"> First Name </label>
+				<div class="col-sm-7">
+					<input type="text" name="firstname" class="form-control"
+						id="firstname" name="firstname"
+						onkeyup="return validateFirstname()"
+						placeholder="Enter first name" autocomplete="off"
+						value="<c:out value='${editRow.firstName}' default='${rowStill.firstName}'/>">
+					<span class="formError"></span>
+				</div>
+			</div>
+			<div class="form-group row" id="lname">
+				<label class="col-sm-2 col-form-label"> Last Name </label>
+				<div class="col-sm-7">
+					<input type="text" name="lastname" id="lastname"
+					class="form-control" onkeyup="return validateLastname()" placeholder="Enter last name"
+					autocomplete="off"
+					value="<c:out value='${editRow.lastName}' default='${rowStill.lastName}'/>">
+					<span class="formError"></span>
+					<span class="formError"></span>
+				</div>
+			</div>
+			<div class="form-group row" id="uname">
+				<label class="col-sm-2 col-form-label"> User Name </label>
+				<div class="col-sm-7">
+			<%-- 	<c:if test="${editRow != null}">
+				<input type="text" name="username" class="form-control"
+					id="username" onkeyup="return validateUsername()" placeholder="Enter username"
+					value="<c:out value='${editRow.user}' default='${rowStill.user}'/>" readonly="readonly">
+			</c:if> --%>
+		<%-- 	<c:if test="${editRow == null}"> --%>
+				<input type="text" name="username" class="form-control"
+					id="username" onkeyup="return validateUsername()" placeholder="Enter username" autocomplete="off"
+					value="<c:out value='${editRow.user}' default='${rowStill.user}'/>">
+			<%-- </c:if> --%>
+					<%-- <input type="text" name="username" class="form-control"
+					id="username" onkeyup="return validateUsername()" placeholder="Enter username"
+					value="<c:out value='${editRow.user}' default='${rowStill.user}'/>"> --%>
+					<span class="formError"> <%=((String) request.getAttribute("userError")) != null ? (String) request.getAttribute("userError") : ""%>
+				</span>
+				</div>
+			</div>
+			
+			<div class="form-group row" id="pass">
+				<label class="col-sm-2 col-form-label"> Password </label>
+				<div class="col-sm-7">
+					<input type="text" name="password"
+					pattern="[A-Za-z,0-9]{1,32}" class="form-control" id="password"
+					onkeyup="return validatePassword()" placeholder="Enter password" autocomplete="off"
+					value="<c:out value='${editRow.pass}' default='${rowStill.pass}'/>">
+					<span class="formError"></span>
+				</div>
+			</div>
+
+			<div class="form-group row" id="add">
+				<label class="col-sm-2 col-form-label"> Address </label>
+				<div class="col-sm-7">
+					<input type="text" name="address" class="form-control" autocomplete="off"
+					id="address" onkeyup="return validateAddress()" placeholder="Enter address"
+					value="<c:out value='${editRow.address}' default='${rowStill.address}'/>">
+					<span class="formError"></span>
+				</div>
+			</div>
+			
+			<div class="form-group row" id="email">
+				<label class="col-sm-2 col-form-label"> Email id </label>
+				<div class="col-sm-7">
+					<input type="text" name="emailId" class="form-control" autocomplete="off"
+					id="emailId" onkeyup="return validateEmail()" placeholder="Enter email Id"
+					value="<c:out value='${editRow.emailId}' default='${rowStill.emailId}'/>">
+					<span class="formError"> <%=((String) request.getAttribute("emailError")) != null ? (String) request.getAttribute("emailError") : ""%>
+				</span>
+				</div>
+			</div>
+		
+		<div class="form-group row" id="contact">
+				<label class="col-sm-2 col-form-label"> Contact Number </label>
+				<div class="col-sm-7">
+					<input type="text" name="contact" class="form-control" autocomplete="off"
+					id=contact onkeyup="return validateContact()" placeholder="Enter contact number"
+					value="<c:out value='${editRow.contact}' default='${rowStill.contact}'/>">
+					<span class="formError"> <%=((String) request.getAttribute("contactError")) != null ? (String) request.getAttribute("contactError") : ""%>
+					</span>
+				</div>
+			</div>
+			<c:if test="${editRow != null}">
+				<button type="submit" class="btn btn-outline-primary" style="width:43%;margin-left: 178px; margin-top:22px"> Update </button>
+			</c:if>
+			<c:if test="${editRow == null}">
+				<button type="submit" class="btn btn-outline-primary" style="width:43%;margin-left: 178px; margin-top:22px"> Save </button>
+			</c:if>
+    </form>
+			<c:if test="${editRow != null}">
+			  	<form action="showAllRecords" method="get" style="margin-top:10px; width 100%">
+			        <button type="submit" class="btn btn-outline-dark" style="margin-top:1px;margin-left: 285px;width: 38%; background-color: transparent;color: black">Cancel</button>
+			    </form>
+   		 	</c:if>
+	<form action="showAllRecords" method="get" style="margin-top:10px; width 100%">
+        <button type="submit" class="btn btn-outline-dark" style="margin-left: 275px;width:40%; background-color: transparent;color: black">Show All Records</button>
+    </form>
+    </div>
+   </div>
+  </div>
 	<script src="js/script.js" type="text/javascript"></script>
 </body>
 </html>
