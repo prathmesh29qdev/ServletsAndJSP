@@ -52,7 +52,7 @@ function validateForm() {
 	} else {
 		setError("pass", "");
 	}
-	
+
 	console.log("email value ");
 	let emailid = document.forms["myForm"]["emailId"].value.trim();
 	emailExpression = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -197,5 +197,81 @@ function validateContact() {
 
 function editRecord(registerRow) {
 	var firstname = registerRow.firstName;
-	console.log("THIS is Data" + firstname); 
+	console.log("THIS is Data" + firstname);
+}
+
+
+function checkForDuplicate() {
+	let email = document.getElementById("emailId").value.trim();
+	console.log("THis is hehe" + email)
+	if (email !== "") {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === XMLHttpRequest.DONE) {
+				if (xhr.status === 200) {
+					var response = xhr.responseText;
+					if (response === "duplicate") {
+						document.getElementById("emailError").innerText = "Email already exists.";
+					} else {
+						document.getElementById("emailError").innerText = "";
+					}
+				} else {
+					console.error("Error:", xhr.status);
+				}
+			}
+		};
+		xhr.open("GET", "register?email=" + encodeURIComponent(email), true);
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhr.send();
+	}
+}
+
+function checkUserNameDuplicate() {
+	let username = document.getElementById("username").value.trim();
+	console.log("THis is hehe" + email)
+	if (username !== "") {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === XMLHttpRequest.DONE) {
+				if (xhr.status === 200) {
+					var response = xhr.responseText;
+					if (response === "duplicate") {
+						document.getElementById("userError").innerText = "Username already exists.";
+					} else {
+						document.getElementById("userError").innerText = "";
+					}
+				} else {
+					console.error("Error:", xhr.status);
+				}
+			}
+		};
+		xhr.open("GET", "register?username=" + encodeURIComponent(username), true);
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhr.send();
+	}
+}
+
+function checkContactDuplicate() {
+	let contact = document.getElementById("contactt").value.trim();
+	console.log("THis is hehe" + contact)
+	if (contact !== "") {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === XMLHttpRequest.DONE) {
+				if (xhr.status === 200) {
+					var response = xhr.responseText;
+					if (response === "duplicate") {
+						document.getElementById("contactError").innerText = "Contact number already exists.";
+					} else {
+						document.getElementById("contactError").innerText = "";
+					}
+				} else {
+					console.error("Error:", xhr.status);
+				}
+			}
+		};
+		xhr.open("GET", "register?contact=" + encodeURIComponent(contact), true);
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhr.send();
+	}
 }

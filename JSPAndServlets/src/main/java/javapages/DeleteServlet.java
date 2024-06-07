@@ -11,25 +11,31 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * <h3>Delete Success</h3>
+ * <p>
+ * This class performs the deletion and redirects to a delete success page.
+ * </p>
+ * 
+ * @author Prathmesh
+ */
 @WebServlet("/deleteServlet")
-public class DeleteServlet extends HttpServlet{
-	
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//	        String user=request.getParameter("user");    
-	        response.setContentType("text/html"); 
-	          
-	        try {
-	        	String user = request.getParameter("storedValue");
-	        	System.out.println("THis is value" + user);
-	        	EmployeeDao employeeDao = new EmployeeDao();
-				employeeDao.deleteUser(user);
-				request.setAttribute("user", user);
-				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/DeleteSuccess.jsp");
-				requestDispatcher.forward(request, response);
-			} catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}  
+public class DeleteServlet extends HttpServlet {
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html");
+
+		try {
+			String user = request.getParameter("storedValue");
+			System.out.println("THis is value" + user);
+			EmployeeDao employeeDao = new EmployeeDao();
+			employeeDao.deleteUser(user);
+			request.setAttribute("deletedUser", user);
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/showAllRecords?");
+			requestDispatcher.forward(request, response);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

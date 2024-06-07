@@ -13,14 +13,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * <h3>Update Servlet</h3>
+ * <p>
+ * This class is used to get the updates values and store into database.
+ * </p>
+ * 
+ * @author Prathmesh
+ */
 @WebServlet("/update")
-public class UpdateServlet extends HttpServlet{
+public class UpdateServlet extends HttpServlet {
 
 	Map<String, Object> rowStill = new HashMap<>();;
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		super.doGet(req, resp);
 	}
 
@@ -36,7 +43,7 @@ public class UpdateServlet extends HttpServlet{
 		String number = request.getParameter("contact").trim();
 		String Id = request.getParameter("id").trim();
 		int id = Integer.parseInt(Id);
-		
+
 		if (number == null && number.isEmpty()) {
 			response.setContentType("text/html");
 			out.println(
@@ -73,7 +80,7 @@ public class UpdateServlet extends HttpServlet{
 			request.setAttribute("address", address);
 			request.setAttribute("emailId", emailId);
 			request.setAttribute("contact", number);
-		
+
 			rowStill.put("id", id);
 			rowStill.put("firstName", firstName);
 			rowStill.put("lastName", lastName);
@@ -82,7 +89,7 @@ public class UpdateServlet extends HttpServlet{
 			rowStill.put("address", address);
 			rowStill.put("emailId", emailId);
 			rowStill.put("contact", number);
-			
+
 			RegisterUser registerUser = new RegisterUser();
 			registerUser.setId(id);
 			registerUser.setFirstName(firstName);
@@ -95,11 +102,9 @@ public class UpdateServlet extends HttpServlet{
 			EmployeeDao employeeDao = new EmployeeDao();
 			try {
 				employeeDao.updateUser(registerUser);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/UpdateSuccessful.jsp");
-			requestDispatcher.forward(request, response);
-			
-	
-			
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/UpdateSuccessful.jsp");
+				requestDispatcher.forward(request, response);
+
 			} catch (ClassNotFoundException | ServletException | IOException | SQLException e) {
 				System.out.println(e.getMessage());
 				request.setAttribute("editRow", rowStill);
@@ -108,26 +113,23 @@ public class UpdateServlet extends HttpServlet{
 					System.out.println(errorMessage);
 					System.out.println("email value " + errorMessage.contains("email"));
 					if (errorMessage.contains("email")) {
-						request.setAttribute("emailError", "Email is duplicate");
+						request.setAttribute("emailError", "Email already exists.");
 					}
 					if (errorMessage.contains("user")) {
-						request.setAttribute("userError", "Username is duplicate");
+						request.setAttribute("userError", "Username already exists.");
 					}
 					if (errorMessage.contains("mobile")) {
-						request.setAttribute("contactError", "Contact number is duplicate");
+						request.setAttribute("contactError", "Contact number already exists.");
 					}
 					if (!errorMessage.contains("email") && !errorMessage.contains("user")
 							&& !errorMessage.contains("mobile")) {
 						response.setContentType("text/html");
-						out.println(
-								"<h3 style = 'color : red'> User Registration Failed - SQL Exception : </h3>"
-										+ e.getMessage());
+						out.println("<h3 style = 'color : red'> User Registration Failed - SQL Exception : </h3>"
+								+ e.getMessage());
 					}
-					RequestDispatcher requestDispatcher = request
-							.getRequestDispatcher("/EmployeeRegistration.jsp");
+					RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
 					requestDispatcher.include(request, response);
-				
-			}
+				}
 			}
 		}
 	}

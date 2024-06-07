@@ -12,25 +12,34 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * <h3>Edit Servlet</h3>
+ * <p>
+ * This class is used to load data for specific employee to edit.
+ * </p>
+ * 
+ * @author Prathmesh
+ */
 @WebServlet("/editServlet")
-public class EditServlet extends HttpServlet{
-	
+public class EditServlet extends HttpServlet {
+
 	private EmployeeDao employeeDao;
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	        String user=request.getParameter("user");    
-	        response.setContentType("text/html"); 
-	          
-	        try {
-				Map<String, Object> editRow  = employeeDao.getUserByUserName(user);
-				request.setAttribute("editRow", editRow);
-				
-				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
-				requestDispatcher.forward(request, response);
-			} catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}  
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String user = request.getParameter("user");
+		response.setContentType("text/html");
+
+		try {
+			Map<String, Object> editRow = employeeDao.getUserByUserName(user);
+			request.setAttribute("editRow", editRow);
+
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/EmployeeRegistration.jsp");
+			requestDispatcher.forward(request, response);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
