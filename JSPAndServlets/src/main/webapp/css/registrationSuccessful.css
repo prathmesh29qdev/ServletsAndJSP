@@ -1,0 +1,30 @@
+@charset "ISO-8859-1";
+
+
+
+.successtable {
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+}
+
+
+th {
+	width: 50%;
+	padding-left: 30%;
+}
+
+td.values {
+	width: 50%;
+	padding-left: 7%;
+}
+
+.tabcontainer {
+	padding-bottom: 30px;
+}
+
+.successmessage {
+	border: 5px solid green;
+	align-items: center;
+	padding-left: 39%;
+}

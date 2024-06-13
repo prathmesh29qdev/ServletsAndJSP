@@ -1,0 +1,18 @@
+@charset "ISO-8859-1";
+
+.pagination a.active {
+	background-color: #4CAF50;
+	color: white;
+}
+
+.pagination a:hover:not(.active) {
+	background-color: #ddd;
+}
+
+.pagination {
+	float: left;
+}
+
+tr.specific:hover {
+	background-color: lightgrey;
+}
